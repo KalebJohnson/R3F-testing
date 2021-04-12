@@ -12,9 +12,9 @@ export default function NavBall(){
     <group>
 
         <group position={[-3.8,-1.5,0]} rotation={[0,0.35,0]} >
-            <Select position={[0,1.05,0]} />
+            <Select position={[-0.02,1.05,0]} />
             <Select position={[-0.7,0.8,0.1]}/>
-            <Select position={[0.7,0.8,0]}/>
+            <Select position={[0.7,0.83,0]}/>
         </group>
 
         <CubeCamera

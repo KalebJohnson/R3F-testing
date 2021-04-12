@@ -1,5 +1,6 @@
 import { useSpring, animated } from '@react-spring/three'
 import React , { useState } from 'react';
+import { Octahedron } from '@react-three/drei';
 
 const Select = (props) => {
     const [active, setActive] = useState(false)
@@ -7,7 +8,7 @@ const Select = (props) => {
     const [ beep, setBeep] = useState(true)
     const ani = useSpring({
         color: hovered ? "orange": "lightblue",
-        scale: active ? [4,4,4] : [1,1,1],
+        scale: active ? [0.2,0.2,0.2] : [0.1,0.1,0.1],
     })
     const audio1 = new Audio("/button-31.mp3")
     const audio2 = new Audio("/button-32.mp3")
@@ -25,7 +26,7 @@ const Select = (props) => {
     onClick={()=> (setActive(!active), sound())}
     scale={ani.scale}
     >
-  <boxBufferGeometry args={[0.1,0.1,0.1]} attach="geometry"/>
+  <Octahedron attach="geometry"/>
    <animated.meshBasicMaterial  color={ani.color}  attach="material"/>
  </animated.mesh> 
 
