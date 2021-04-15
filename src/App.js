@@ -1,22 +1,15 @@
 import React, {Suspense, useState} from 'react';
 import { Canvas, useThree, extend, useFrame} from '@react-three/fiber';
 import { OrbitControls, Effects, Billboard, Html, Text, useTexture} from '@react-three/drei';
-import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass";
 import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass";
 import SkyBox from './comps/SkyBox';
 import NavBall from './comps/NavBall';
 import ActionGroup from './comps/ActionGroup';
+import Start from './comps/Start';
 import * as THREE from 'three'
 import './index.css';
 
-const Start = () => {
-  return(
-    <mesh>
-    <sphereGeometry args={[0.1,256,256]}/>
-    <meshLambertMaterial  roughness={0} metalness={1} color="lightblue" material="material" />
-    </mesh>
-  )
-}
+
 
 function Rig() {
   const { camera, mouse } = useThree()
@@ -36,14 +29,13 @@ const Bootup = () => {
 }
 
 
-extend({GlitchPass, BloomPass });
+extend({GlitchPass});
 
 function App() {
   return (
     <Canvas camera={{fov: 60}}>
       <Suspense fallback={<Bootup/>}>
         <SkyBox/>
-        <Start/>
         <ActionGroup/>
         <NavBall/>
       </Suspense>

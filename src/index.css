@@ -17,3 +17,8 @@ canvas{
   padding: 10px 15px;
   border-radius: 5px;
 }
+
+.card{
+  will-change: transform;
+
+}
