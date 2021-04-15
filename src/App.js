@@ -1,32 +1,37 @@
-import React, {Suspense} from 'react';
-import { Canvas, useThree, extend} from '@react-three/fiber';
-import { OrbitControls, Effects, Billboard, Html, Text} from '@react-three/drei';
+import React, {Suspense, useState} from 'react';
+import { Canvas, useThree, extend, useFrame} from '@react-three/fiber';
+import { OrbitControls, Effects, Billboard, Html, Text, useTexture} from '@react-three/drei';
 import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass";
 import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass";
 import SkyBox from './comps/SkyBox';
 import NavBall from './comps/NavBall';
+import ActionGroup from './comps/ActionGroup';
+import * as THREE from 'three'
 import './index.css';
 
-const Welcome = () => {
+const Start = () => {
+  return(
+    <mesh>
+    <sphereGeometry args={[0.1,256,256]}/>
+    <meshLambertMaterial  roughness={0} metalness={1} color="lightblue" material="material" />
+    </mesh>
+  )
+}
+
+function Rig() {
+  const { camera, mouse } = useThree()
+  const vec = new THREE.Vector3()
+  return useFrame(() => camera.position.lerp(vec.set(mouse.x * .5, mouse.y * .5, camera.position.z), 0.02))
+}
+
+
+const Bootup = () => {
   return (
-    <Billboard
-      args={[2,1]}
-      position={[-3.8,1,0]}
-      follow={true} // Follow the camera (default=true)
-      lockX={false} // Lock the rotation on the x axis (default=false)
-      lockY={false} // Lock the rotation on the y axis (default=false)
-      lockZ={false} // Lock the rotation on the z axis (default=false)
-    >
-      <Text
-        position={[0,0,.01]}
-        color="black" // default
-        anchorX="center" // default
-        anchorY="middle" // default
-      >
-        Navigate with this guy bellow!
-      </Text>
-      
-    </Billboard>
+    
+    <Html center={true}>
+      <div><img src="/bootup.gif"/></div>
+    </Html>
+   
   )
 }
 
@@ -36,18 +41,14 @@ extend({GlitchPass, BloomPass });
 function App() {
   return (
     <Canvas camera={{fov: 60}}>
-      <Suspense fallback={null}>
+      <Suspense fallback={<Bootup/>}>
         <SkyBox/>
-        <Welcome/>
+        <Start/>
+        <ActionGroup/>
         <NavBall/>
-        <mesh position={[-1,0,0]}>
-          <boxBufferGeometry attach="geometry"></boxBufferGeometry>
-          <meshLambertMaterial attach="material" color="red"></meshLambertMaterial>
-        </mesh>
       </Suspense>
-      <spotLight position={[10,5,0]} angle={0.3}/>
-      <OrbitControls/>
-      <ambientLight intensity={1}/>
+      <ambientLight intensity={1}/> 
+      <Rig />
     </Canvas>
   );
 }

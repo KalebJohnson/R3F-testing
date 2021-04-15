@@ -7,3 +7,13 @@ canvas{
   padding: 0;
   background-color: black;
 }
+
+.content {
+  padding-top: 10px;
+  transform: translate3d(50%, 0, 0);
+  text-align: left;
+  background: white;
+  color: black;
+  padding: 10px 15px;
+  border-radius: 5px;
+}

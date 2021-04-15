@@ -3,6 +3,10 @@ import { CubeCamera, useTexture } from '@react-three/drei';
 import Select from './Select'
 
 export default function NavBall(){
+    const Skills = {position1:[0.7,0.83,0], position2:[9,5.1,0.5], name:"Skills"}
+    const Education = {position1:[-0.7,0.8,0.1], position2:[-1.3,4.9,-3], name:"Education"}
+    const Projects = {position1:[-0.02,1.05,0], position2:[4.15,4.7,-0.3], name:"Projects"}
+    const options = [Skills, Projects, Education]
     //const ringRef = useRef();
     const holotexture = useTexture('/hologram.jpg')
     //useFrame(() => {
@@ -12,9 +16,9 @@ export default function NavBall(){
     <group>
 
         <group position={[-3.8,-1.5,0]} rotation={[0,0.35,0]} >
-            <Select position={[-0.02,1.05,0]} />
-            <Select position={[-0.7,0.8,0.1]}/>
-            <Select position={[0.7,0.83,0]}/>
+           { options.map(option => {
+                return <Select {...option}/>
+            }) } 
         </group>
 
         <CubeCamera
