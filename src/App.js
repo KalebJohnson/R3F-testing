@@ -5,8 +5,8 @@ import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass";
 import SkyBox from './comps/SkyBox';
 import NavBall from './comps/NavBall';
 import ActionGroup from './comps/ActionGroup';
-import Start from './comps/Start';
 import * as THREE from 'three'
+import { RecoilRoot } from "recoil";
 import './index.css';
 
 
@@ -34,13 +34,15 @@ extend({GlitchPass});
 function App() {
   return (
     <Canvas camera={{fov: 60}}>
-      <Suspense fallback={<Bootup/>}>
-        <SkyBox/>
-        <ActionGroup/>
-        <NavBall/>
-      </Suspense>
-      <ambientLight intensity={1}/> 
-      <Rig />
+     <RecoilRoot>
+        <Suspense fallback={<Bootup/>}>
+          <SkyBox/>
+          <ActionGroup/>
+          <NavBall/>
+        </Suspense>
+        <ambientLight intensity={1}/> 
+        <Rig />
+      </RecoilRoot>
     </Canvas>
   );
 }

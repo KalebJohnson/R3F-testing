@@ -1,65 +1,51 @@
 import React, { useState } from 'react';
-import { Reflector, Html, Effects, MeshWobbleMaterial } from '@react-three/drei';
+import { Reflector, Effects, MeshWobbleMaterial } from '@react-three/drei';
 import { useSpring, animated, config} from '@react-spring/three';
-import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass";
-import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass";
+import { panelState } from '../store/State'
+import { useRecoilValue } from "recoil";
 
 const Tablet = (props) => {
 
-
+    const panel = useRecoilValue(panelState)
     const [active, setActive] = useState(false)
     const [hovered, setHovered] = useState(false)
     const ani = useSpring({
+        config: { mass:1, tension:10, friction:8 },
         color: ( hovered || active) ? "blue": "lightblue",
         scale: hovered ? [1.05,1.05,1.05] : [1,1,1],
-        position: active ? props.backing.position1 : props.backing.position1,
+        position: panel ? [0,0,0] : [0,10,0],
         
     })
     const ani2 = useSpring({
-      scale: hovered ? [0.4,0.4,0.4] : [0.2,0.2,0.2],
-      rotation: active ? [0.1,-0.3,0.04] : [-0.1,0.3,0],
-      position: active ? [50,0,0] : [0,0,0]
-  })
+        position: panel ? props.position2 : props.position1,
+     })
 
 
     return(
-        <group
+        <animated.group
         rotation={props.rotation}
+        position={ani.position}
         >
             <animated.mesh 
-            position={props.backing.position1}
             onPointerOver={() => setHovered(true)}
             onPointerOut={() => setHovered(false)}
             scale={ani.scale}
-            position={ani.position}
+            position={props.backing.position2}
             >
                 <planeBufferGeometry args={props.backing.args} geometry="geometry" />
                 <MeshWobbleMaterial
                 factor={.05} // Strength, 0 disables the effect (default=1)
                 speed={2}
                 transparent={true}
-                opacity={0.4}
-                color="lightblue"
+                opacity={0.6}
+                color="purple"
                 material="material"/>
 
-            <Html
-             prepend // Project content behind the canvas (default: false)
-             center={true} // Adds a -50%/-50% css transform (default: false) [ignored in transform mode]
-             fullscreen // Aligns to the upper-left corner, fills the screen (default:false) [ignored in transform mode]
-             distanceFactor={10} // If set (default: undefined), children will be scaled by this factor, and also by distance to a PerspectiveCamera / zoom by a OrthographicCamera.
-             zIndexRange={[100, 0]} // Z-order range (default=[16777271, 0])
-             transform // If true, applies matrix3d transformations (default=false)
-             sprite // Renders as sprite, but only in transform mode (default=false)
-            ><div
-
-            >hi
-            </div>
-            </Html>
-
+ 
             </animated.mesh>
 
             <Reflector
-            position={props.position1}
+            position={props.position2}
             args={props.args} // PlaneBufferGeometry arguments
             resolution={1500} // Off-buffer resolution, lower=faster, higher=better quality
             mirror={1} // Mirror environment, 0 = texture colors, 1 = pick up env colors
@@ -81,7 +67,8 @@ const Tablet = (props) => {
             {(Material, props) => <Material {...props}/>}
             </Reflector>
 
-        </group>
+
+        </animated.group>
     )
 }
 
